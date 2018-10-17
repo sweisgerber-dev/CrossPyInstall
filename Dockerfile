@@ -4,7 +4,6 @@
 # References:
 #       http://source.android.com/source/index.html
 # ===========================================================================================
-
 FROM python:3.6.6-slim-stretch
 
 ENV GOSU_VERSION=1.10
@@ -66,7 +65,6 @@ RUN runuser -l ${USER} -c "virtualenv ${PYTHON_ENV}/${PYTHON_ENV_NAME}"
 # EXPOSE ###############################################################################################################
 VOLUME ["/workspace"]
 WORKDIR ${WORKDIR}
-
 
 #RUN chown ${USER}:${USER} /usr/local/bin/entrypoint.sh
 
