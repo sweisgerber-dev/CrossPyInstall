@@ -30,7 +30,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     gpg
 
+COPY res/gosu.gpg /root/gosu.gpg
+
 # Add "gosu" tool ######################################################################################################
+# Alternative Import: gpg --keyserver keys.gnupg.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 RUN set -ex; \
     \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
@@ -38,7 +41,7 @@ RUN set -ex; \
     curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
     \
     export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver keys.gnupg.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+    gpg --import /root/gosu.gpg; \
     gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
     rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
     \
