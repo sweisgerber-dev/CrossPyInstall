@@ -6,6 +6,8 @@
 # ===========================================================================================
 FROM python:3.6.6-slim-stretch
 
+MAINTAINER Sebastian Weisgerber <sweisgerber.dev@gmail.com>
+
 ENV GOSU_VERSION=1.10
 
 ENV USER=pyuser
@@ -15,9 +17,10 @@ ENV GROUP_ID_DEFAULT=1000
 ENV WORKDIR=/workspace
 ENV PYTHON_ENV=/env
 ENV PYTHON_ENV_NAME="default3.6"
+ENV PYTHON_ENV_NAME_EXTERNAL="external"
 ENV VIRTUALENV_PATH="${PYTHON_ENV}/${PYTHON_ENV_NAME}"
+ENV VIRTUALENV_PATH_EXTERNAL="${PYTHON_ENV}/${PYTHON_ENV_NAME_EXTERNAL}"
 
-MAINTAINER Sebastian Weisgerber <sweisgerber.dev@gmail.com>
 
 # See https://github.com/docker/docker/issues/4032
 #ENV DEBIAN_FRONTEND noninteractive
@@ -63,7 +66,9 @@ COPY config/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN runuser -l ${USER} -c "virtualenv ${PYTHON_ENV}/${PYTHON_ENV_NAME}"
 
 # EXPOSE ###############################################################################################################
-VOLUME ["/workspace"]
+VOLUME [ \
+    "${WORKDIR}", \
+    "${VIRTUALENV_PATH_EXTERNAL}"]
 WORKDIR ${WORKDIR}
 
 #RUN chown ${USER}:${USER} /usr/local/bin/entrypoint.sh
